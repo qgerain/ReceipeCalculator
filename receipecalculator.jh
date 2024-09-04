@@ -1,0 +1,70 @@
+// an ignored comment
+/** not an ignored comment */
+entity Location {
+	streetAddress String
+	postalCode String
+	city String
+	stateProvince String
+}
+
+entity Ingredient {
+	ingredientName String required
+    ingredientDescription String
+    ingredientLocation Location
+}
+
+entity IngredientPrice {
+	ingredient Ingredient required
+    date Instant
+    price Double
+}
+
+entity Receipe {
+	receipeName String required
+    totalWeight Float
+}
+
+entity ReceipeIngredient {
+	ingredient Ingredient
+    quantity Float
+}
+
+entity Product {
+	receipe Receipe required
+    foodCostPercentage Double min(0) max(100)
+}
+
+relationship OneToOne {
+	Product{receipe} to Receipe
+}
+
+relationship OneToOne {
+	Ingredient{ingredientLocation} to Location
+}
+
+relationship OneToMany {
+	Ingredient to IngredientPrice{ingredient}
+}
+
+relationship OneToMany {
+	Receipe to ReceipeIngredient
+}
+
+relationship OneToOne {
+	ReceipeIngredient{ingredient} to Ingredient
+}
+
+
+
+// Set pagination options
+paginate JobHistory, Employee with infinite-scroll
+paginate Job with pagination
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Employee, Job
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
